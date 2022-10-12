@@ -3,7 +3,7 @@ OpenConnect VPN container with SAML 2.0 auth integration
 
 An updated implementation of https://github.com/MorganOnBass/docker-ocserv-saml
 
-**The following changes have been implemented and tested:**
+### The following changes have been implemented and tested:
 
 Dockerfile:
 1. Rebase to Alpine 3.16 (container base OS)
@@ -21,7 +21,7 @@ OpenConnect default configuration changes:
 2. Require perfect forward secrecy compliance in cipher suites by default - removes compatability with older clients in exchange for better ciphers
 
 
-**The following changes are planned but not implemented:**
+### The following changes are planned but not implemented:
 
 Docker entrypoint script:
 - Move letsencrypt automated certificate management to container entrypoint script
