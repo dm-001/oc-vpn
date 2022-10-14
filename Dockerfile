@@ -5,10 +5,12 @@ LABEL maintainer="dm" \
       description="Openconnect VPN server with saml 2.0 auth"
 
 # Forked from MorganOnBass https://github.com/MorganOnBass/docker-ocserv-saml
-# and https://gitlab.com/morganofbass/ocserv.git
-# Rebased to Alpine 3.16, with dependencies updated. Default ocserv security posture
-# increased.
-# TLS cert automated added, anyConnect profile automation added.
+# and using https://gitlab.com/morganofbass/ocserv.git for SAML 2.0 auth.
+# Rebased to Alpine 3.16.
+# Key dependencies updated: xmlsec1, lasso to current verion.
+# Default ocserv security posture increased. Forward secrecy enforced, compatability
+# with older clients discarded to remove old DTLS issues.
+# Cert request and renewal automated.
 
 # build ocserv
 RUN buildDeps=" \
