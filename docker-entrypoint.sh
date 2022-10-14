@@ -112,7 +112,6 @@ done
 
 # Process SPLIT_DNS env var
 if [[ ! -z "${SPLIT_DNS_DOMAINS}" ]]; then
-	echo "going through split dns domains if then"
 	sed -i '/^split-dns =/d' /config/ocserv.conf
 	# split comma seperated string into list from SPLIT_DNS_DOMAINS env variable
 	IFS=',' read -ra split_domain_list <<< "${SPLIT_DNS_DOMAINS}"
@@ -139,20 +138,17 @@ if [[ ! -z "${DEFAULT_DOMAIN}" ]]; then
 fi
 
 if [[ ! -z "${VPN_NAME}" ]]; then
-	echo "running sed on profile.xml for vpn name"
 	sed -i "s/<HostName>.\+<\/HostName>/<HostName>${VPN_NAME}<\/HostName>/g" /config/profile.xml
 fi
 
 if [[ ! -z "${HOSTNAME}" ]]; then
-	echo "running sed on profile.xml for hostname: ${HOSTNAME}"
+	echo "$(date) [info] Adding hostname: ${HOSTNAME} to config, metadata profile"
 	sed -i "s/^hostname.*$/hostname = ${HOSTNAME}/" /config/ocserv.conf
 	sed -i "s/https:\/\/[^\/?#]*/https:\/\/${HOSTNAME}/g" /config/sp-metadata.xml
         sed -i "s/<HostAddress>.\+<\/HostAddress>/<HostName>${HOSTNAME}<\/HostAddress>/g" /config/profile.xml
 fi
 
-##### Replace certs if none exist #####
-
-	
+##### Get certs if none exist #####
 if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem ]; then
         # Make sure there's an email address provided
         if [[ -z "${TLS_EMAIL}" ]]; then
@@ -166,7 +162,7 @@ if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem
 	    echo "$(date) [info] No certificates were found, requesting live TLS certificates for ${HOSTNAME} from LetsEncrypt"
 	    certbot certonly --standalone --agree-tos -n -m $TLS_EMAIL -d $HOSTNAME
 	fi	
-	# set up link for cert location to /config/certs/server-cert.pem etc
+	# Copy and rename to /config/certs/server-cert.pem etc
 	cp --update -v /etc/letsencrypt/live/$HOSTNAME/fullchain.pem /config/certs/server-cert.pem
 	cp --update -v /etc/letsencrypt/live/$HOSTNAME/privkey.pem /config/certs/server-key.pem
 	# set up a renewal hook to recopy certs and reload the VPN server upon cert renewal
@@ -174,6 +170,7 @@ if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem
 	echo "cp --update -v /etc/letsencrypt/live/${HOSTNAME}/privkey.pem /config/certs/server-key.pem"  >>  /etc/letsencrypt/renewal-hooks/post/run.sh
         echo "pkill -HUP ocserv" >> /etc/letsencrypt/renewal-hooks/post/run.sh && chmod +x /etc/letsencrypt/renewal-hooks/post/run.sh
 else
+	#certs already in place
 	echo "$(date) [info] Using existing certificates in /config/certs"
 fi
 
