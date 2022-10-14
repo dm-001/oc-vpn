@@ -1,12 +1,14 @@
 FROM alpine:latest
 
-LABEL maintainer="@MorganOnBass" \
-      maintainer="morgan@mackechnie.uk" \
-      version=0.1 \
-      description="Openconnect server with saml authentication support"
+LABEL maintainer="dm" \
+      version=0.2 \
+      description="Openconnect VPN server with saml 2.0 auth"
 
-# Forked from MarkusMcNugen for LDAP and eventually SAML
-# Forked from TommyLau for unRAID
+# Forked from MorganOnBass https://github.com/MorganOnBass/docker-ocserv-saml
+# and https://gitlab.com/morganofbass/ocserv.git
+# Rebased to Alpine 3.16, with dependencies updated. Default ocserv security posture
+# increased.
+# TLS cert automated added, anyConnect profile automation added.
 
 # build ocserv
 RUN buildDeps=" \
@@ -78,6 +80,7 @@ RUN buildDeps=" \
             rsync \
             sipcalc \
             libnl3 \
+            certbot \
             bash" && \
       apk add --update --virtual .run-deps $runDeps && \
       apk del .build-deps && \
@@ -95,4 +98,5 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 443/tcp
 EXPOSE 443/udp
+EXPOSE 80/tcp
 CMD ["ocserv", "-c", "/config/ocserv.conf", "-f"]

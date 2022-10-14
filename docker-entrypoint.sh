@@ -112,6 +112,7 @@ done
 
 # Process SPLIT_DNS env var
 if [[ ! -z "${SPLIT_DNS_DOMAINS}" ]]; then
+	echo "going through split dns domains if then"
 	sed -i '/^split-dns =/d' /config/ocserv.conf
 	# split comma seperated string into list from SPLIT_DNS_DOMAINS env variable
 	IFS=',' read -ra split_domain_list <<< "${SPLIT_DNS_DOMAINS}"
@@ -137,77 +138,44 @@ if [[ ! -z "${DEFAULT_DOMAIN}" ]]; then
 	sed -i "s/^default-domain =.*$/default-domain = ${DEFAULT_DOMAIN}/" /config/ocserv.conf
 fi
 
+if [[ ! -z "${VPN_NAME}" ]]; then
+	echo "running sed on profile.xml for vpn name"
+	sed -i "s/<HostName>.\+<\/HostName>/<HostName>${VPN_NAME}<\/HostName>/g" /config/profile.xml
+fi
+
 if [[ ! -z "${HOSTNAME}" ]]; then
+	echo "running sed on profile.xml for hostname: ${HOSTNAME}"
 	sed -i "s/^hostname.*$/hostname = ${HOSTNAME}/" /config/ocserv.conf
 	sed -i "s/https:\/\/[^\/?#]*/https:\/\/${HOSTNAME}/g" /config/sp-metadata.xml
+        sed -i "s/<HostAddress>.\+<\/HostAddress>/<HostName>${HOSTNAME}<\/HostAddress>/g" /config/profile.xml
 fi
 
-if [[ ! -z "${VPN_PROFILE}" ]]; then
-        sed -i "s/^user-profile.*$/user-profile = ${VPN_PROFILE}/" /config/ocserv.conf
-fi
+##### Replace certs if none exist #####
 
-
-##### Generate certs if none exist #####
-if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem ]; then
-	# No certs found
-	echo "$(date) [info] No certificates were found, creating them from provided or default values"
 	
-	# Check environment variables
-	if [ -z "$CA_CN" ]; then
-		CA_CN="VPN CA"
-	fi
-
-	if [ -z "$CA_ORG" ]; then
-		CA_ORG="OCSERV"
-	fi
-
-	if [ -z "$CA_DAYS" ]; then
-		CA_DAYS=9999
-	fi
-
-	if [ -z "$SRV_CN" ]; then
-		SRV_CN="vpn.example.com"
-	fi
-
-	if [ -z "$SRV_ORG" ]; then
-		SRV_ORG="MyCompany"
-	fi
-
-	if [ -z "$SRV_DAYS" ]; then
-		SRV_DAYS=9999
-	fi
-
-	# Generate certs one
-	mkdir /config/certs
-	cd /config/certs
-	certtool --generate-privkey --outfile ca-key.pem
-	cat > ca.tmpl <<-EOCA
-	cn = "$CA_CN"
-	organization = "$CA_ORG"
-	serial = 1
-	expiration_days = $CA_DAYS
-	ca
-	signing_key
-	cert_signing_key
-	crl_signing_key
-	EOCA
-	certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --outfile ca.pem
-	certtool --generate-privkey --outfile server-key.pem 
-	cat > server.tmpl <<-EOSRV
-	cn = "$SRV_CN"
-	organization = "$SRV_ORG"
-	expiration_days = $SRV_DAYS
-	signing_key
-	encryption_key
-	tls_www_server
-	EOSRV
-	certtool --generate-certificate --load-privkey server-key.pem --load-ca-certificate ca.pem --load-ca-privkey ca-key.pem --template server.tmpl --outfile server-cert.pem
+if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem ]; then
+        # Make sure there's an email address provided
+        if [[ -z "${TLS_EMAIL}" ]]; then
+            TLS_EMAIL="example@example.com"
+        fi
+	# No certs found
+        if [[ $TLS_TEST = "true" ]]; then
+	    echo "$(date) [info] No certificates were found, requesting TEST TLS certificates for ${HOSTNAME} from LetsEncrypt"
+	    certbot certonly --standalone --test-cert --agree-tos -n -m $TLS_EMAIL -d $HOSTNAME
+        else
+	    echo "$(date) [info] No certificates were found, requesting live TLS certificates for ${HOSTNAME} from LetsEncrypt"
+	    certbot certonly --standalone --agree-tos -n -m $TLS_EMAIL -d $HOSTNAME
+	fi	
+	# set up link for cert location to /config/certs/server-cert.pem etc
+	cp --update -v /etc/letsencrypt/live/$HOSTNAME/fullchain.pem /config/certs/server-cert.pem
+	cp --update -v /etc/letsencrypt/live/$HOSTNAME/privkey.pem /config/certs/server-key.pem
+	# set up a renewal hook to recopy certs and reload the VPN server upon cert renewal
+	echo "cp --update -v /etc/letsencrypt/live/${HOSTNAME}/fullchain.pem /config/certs/server-cert.pem" > /etc/letsencrypt/renewal-hooks/post/run.sh
+	echo "cp --update -v /etc/letsencrypt/live/${HOSTNAME}/privkey.pem /config/certs/server-key.pem"  >>  /etc/letsencrypt/renewal-hooks/post/run.sh
+        echo "pkill -HUP ocserv" >> /etc/letsencrypt/renewal-hooks/post/run.sh && chmod +x /etc/letsencrypt/renewal-hooks/post/run.sh
 else
 	echo "$(date) [info] Using existing certificates in /config/certs"
 fi
-
-# Open ipv4 ip forward (done by default on alpine though, how kind)
-# sysctl -w net.ipv4.ip_forward=1
 
 # Enable NAT forwarding
 iptables -t nat -A POSTROUTING -j MASQUERADE
@@ -218,6 +186,7 @@ mkdir -p /dev/net
 mknod /dev/net/tun c 10 200
 chmod 600 /dev/net/tun
 
+# Can we fix this chmod?
 chmod -R 777 /config
 
 # Run OpenConnect Server

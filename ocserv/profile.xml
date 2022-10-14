@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnyConnectProfile xmlns="http://schemas.xmlsoap.org/encoding/">
+        <ClientInitialization>
+                <AuthenticationTimeout>80</AuthenticationTimeout>
+                <WindowsVPNEstablishment>AllowRemoteUsers</WindowsVPNEstablishment>
+                <LinuxVPNEstablishment>AllowRemoteUsers</LinuxVPNEstablishment>
+                <IPProtocolSupport>IPv4</IPProtocolSupport>
+                <UseStartBeforeLogon UserControllable="false">false</UseStartBeforeLogon>
+                <AutomaticCertSelection UserControllable="false">true</AutomaticCertSelection>
+                <ShowPreConnectMessage>false</ShowPreConnectMessage>
+                <CertificateStore>All</CertificateStore>
+                <CertificateStoreMac>All</CertificateStoreMac>
+                <CertificateStoreLinux>All</CertificateStoreLinux>
+                <CertificateStoreOverride>false</CertificateStoreOverride>
+                <ProxySettings>Native</ProxySettings>
+                <AllowLocalProxyConnections>true</AllowLocalProxyConnections>
+                <MobilePolicy>
+                        <DeviceLockRequired
+                                MaximumTimeoutMinutes="5"
+                                MinimumPasswordLength="4"
+                                PasswordComplexity="alpha"/>
+                </MobilePolicy>
+        </ClientInitialization>
+        <ServerList>
+                <HostEntry>
+                        <HostName>Example VPN</HostName>
+                        <HostAddress>vpn-test.example.com</HostAddress>
+                </HostEntry>
+        </ServerList>
+</AnyConnectProfile>
