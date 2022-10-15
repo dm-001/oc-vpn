@@ -20,56 +20,21 @@ Planned changes not yet implemented:
 ## Environment Variables
 
 
-- HOSTNAME
-
-> Hostname/FQDN of VPN server : "vpn.example.com"
-
-- VPN_NAME
-
-> Friendly name of VPN server (for Anyconnect clients) : "Example VPN"
-
-- GEOBLOCK
-
-: True/False - Enable or disable geoblocking functionality :  "true"
-
-- ALLOW_COUNTRY_CODES
-
-: List of space-seperated ISO 3166 two-letter country codes. Geoblocking whitelist : "US FR DE GB CA AU NZ"
-
-- LISTEN_PORT
-
-: Port for VPN advertisement and traffic (depreciated - to be removed) : "443"
-
-- TLS_EMAIL
-: Email to register letsencrypt certificates against : "email@example.com"
-
-- TLS_TEST
-
-: True/False - Use letsencrypt ACME test endpoint instead of production endpoint : "false"
-
-- TUNNEL_MODE
-
-: split-include/all - full of split tunnel VPN mode : "split-include"
-
-- TUNNEL_ROUTES
-
-: VPN routes if running in split tunnel mode. CIDR, comma separated : "10.1.2.128/25, 192.168.1.0/24"
-
-- DNS_SERVERS
-
-: DNS servers to use via VPN : "10.1.2.254"
-
-- DEFAULT_DOMAIN
-
-: Default VPN domain : "internal.example.com"
-
-- CLIENTNET
-
-: Virtual network for VPN clients : "192.168.248.0"
-
-- CLIENTNETMASK
-
-: VPN virtual network subnet mask : "255.255.255.128"
+| Environment Var | Example Value | Definition |
+|--|--|--|
+| HOSTNAME | "vpn.example.com" | Hostname/FQDN of VPN server |
+| VPN_NAME | "My Example VPN" | Friendly name of VPN server (for Anyconnect clients) |
+| GEOBLOCK | "true" | Enable/disable geoblocking function (true/false) |
+| ALLOW_COUNTRY_CODES | "US FR DE GB CA AU NZ" | >List of space-seperated ISO 3166 two-letter country codes. Geoblocking whitelist |
+| LISTEN_PORT | "443" | Port for VPN advertisement and traffic (depreciated - to be removed) |
+| TLS_EMAIL | "email@example.com" | Email to register letsencrypt certificates against |
+| TLS_TEST | "false" | Use letsencrypt ACME test endpoint instead of production endpoint (true/false) |
+| TUNNEL_MODE | "split-include" | Full of split tunnel VPN mode (full/split-include) |
+| TUNNEL_ROUTES | "10.1.2.128/25, 192.168.1.0/24" | VPN routes if running in split tunnel mode. CIDR, comma separated |
+| DNS_SERVERS | "10.1.2.254" | DNS servers to use via VPN |
+| DEFAULT_DOMAINS | "internal.example.com" | Default VPN domain |
+| CLIENTNET | "192.168.248.0" | Virtual network used for VPN clients |
+| CLIENTNETMASK | "255.255.255.128" | VPN virtual network subnet mask | 
 
 
 
