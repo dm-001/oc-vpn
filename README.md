@@ -47,59 +47,45 @@ Once the container image has been built with docker follow the steps below to la
 
 
 
-`version: "3"
-
-services:
-
-ocserv:
-
-   container_name: ocserv
-   
-    build:
-      # Whereever this repo was cloned to
-      context: /opt/ocserv-saml
+    version: "3"
     
-    ports:
+    services:
     
-      - "80:80/tcp"
+      oc-vpn:
+        # Point to the folder this repo was cloned to
+        build:
+          context: /opt/ocserv-saml
     
-      - "443:443/tcp"
-      
-      - "443:443/udp"
-      
-    environment:
+        # Map host ports to container ports  
+        ports:
+          - "80:80/tcp"
+          - "443:443/tcp"
+          - "443:443/udp"
     
-      HOSTNAME: "vpn.example.com"
-      
-      VPN_NAME: "Example VPN"
-      
-      LISTEN_PORT: "443"
-      
-      TLS_EMAIL: "email@example.com"
-      
-      TLS_TEST: "false"
-      
-      TUNNEL_MODE: "split-include'
-      
-      TUNNEL_ROUTES: "10.1.2.128/25, 192.168.1.0/24"
-      
-      DNS_SERVERS: "10.1.2.254"
-      
-      DEFAULT_DOMAIN: "internal.example.com"
-      
-      SPLIT_DNS_DOMAINS: "internal.example.com"
-      
-      CLIENTNET: "192.168.248.0"
-      
-      CLIENTNETMASK: "255.255.255.128"
-      
-    volumes:
-      - "./config:/config"
-      
-    cap_add:
-      - NET_ADMIN
-      
-    privileged: true
-    
-    restart: unless-stopped
- `
+        # Set variables  
+        environment:
+          HOSTNAME: "vpn.example.com"
+          VPN_NAME: "Example VPN"
+          LISTEN_PORT: "443"
+          TLS_EMAIL: "email@example.com"
+          TLS_TEST: "false"
+          TUNNEL_MODE: "split-include"
+          TUNNEL_ROUTES: "10.1.2.128/25, 192.168.1.0/24"
+          DNS_SERVERS: "10.1.2.254"
+          DEFAULT_DOMAIN: "internal.example.com"
+          CLIENTNET: "192.168.248.0"
+          CLIENTNETMASK: "255.255.255.128"
+        
+        # Mount the config folder in the container
+        volumes:
+          - "./config:/config"
+          
+        # Give container the right to bind to low ports (80,443)
+        cap_add:
+          - NET_ADMIN
+        
+        # Required privilege for VPN networking
+        privileged: true
+        
+        # Restart the container if it stops
+        restart: unless-stopped
