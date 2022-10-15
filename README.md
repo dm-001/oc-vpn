@@ -47,13 +47,13 @@ Once the container image has been built with docker follow the steps below to la
 
 `
 
-version: "3"
-
-services:
-  ocserv:
-    container_name: ocserv
-    image: morganonbass/ocserv-saml:latest
-    ports:
+`version: "3"
+`
+`services:
+`  ocserv:
+`    container_name: ocserv
+`    image: morganonbass/ocserv-saml:latest
+`    ports:
       - "443:443/tcp"
       - "443:443/udp"
     environment:
