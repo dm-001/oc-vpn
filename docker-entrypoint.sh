@@ -200,9 +200,9 @@ fi
 iptables -t nat -A POSTROUTING -j MASQUERADE
 iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 
-# Enable TUN device
-mkdir -p /dev/net
-mknod /dev/net/tun c 10 200
+# Create (if required) and enable TUN device
+[[ -d /dev/net ]] || mkdir -p /dev/net
+[[ -f /dev/net/tun ]] || mknod /dev/net/tun c 10 200
 chmod 600 /dev/net/tun
 
 # Can we fix this chmod?
