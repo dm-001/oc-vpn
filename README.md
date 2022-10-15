@@ -23,13 +23,13 @@ Planned changes not yet implemented:
 | Environment Var | Example Value | Definition |
 |--|--|--|
 | HOSTNAME | "vpn.example.com" | Hostname/FQDN of VPN server |
-| VPN_NAME | "My Example VPN" | Friendly name of VPN server (for Anyconnect clients) |
-| GEOBLOCK | "true" | Enable/disable geoblocking function (true/false) |
-| ALLOW_COUNTRY_CODES | "US FR DE GB CA AU NZ" | >List of space-seperated ISO 3166 two-letter country codes. Geoblocking whitelist |
+| VPN_NAME | "My Example VPN" | Friendly name of VPN server |
+| GEOBLOCK | "true" | Enable/disable geoblocking function. Accepted values: true, false |
+| ALLOW_COUNTRY_CODES | "US FR DE GB CA AU NZ" | List of space-seperated ISO 3166 two-letter country codes for geoblocking whitelist |
 | LISTEN_PORT | "443" | Port for VPN advertisement and traffic (depreciated - to be removed) |
 | TLS_EMAIL | "email@example.com" | Email to register letsencrypt certificates against |
-| TLS_TEST | "false" | Use letsencrypt ACME test endpoint instead of production endpoint (true/false) |
-| TUNNEL_MODE | "split-include" | Full of split tunnel VPN mode (full/split-include) |
+| TLS_TEST | "false" | Use letsencrypt ACME test endpoint instead of production endpoint. Accepted values: true, false |
+| TUNNEL_MODE | "split-include" | Full of split tunnel VPN mode. Accepted values: full, split-include |
 | TUNNEL_ROUTES | "10.1.2.128/25, 192.168.1.0/24" | VPN routes if running in split tunnel mode. CIDR, comma separated |
 | DNS_SERVERS | "10.1.2.254" | DNS servers to use via VPN |
 | DEFAULT_DOMAINS | "internal.example.com" | Default VPN domain |
