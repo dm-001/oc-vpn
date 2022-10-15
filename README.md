@@ -22,11 +22,11 @@ Planned changes not yet implemented:
 
 - HOSTNAME
 
-: Hostname/FQDN of VPN server : "vpn.example.com"
+> Hostname/FQDN of VPN server : "vpn.example.com"
 
 - VPN_NAME
 
-: Friendly name of VPN server (for Anyconnect clients) : "Example VPN"
+> Friendly name of VPN server (for Anyconnect clients) : "Example VPN"
 
 - GEOBLOCK
 
