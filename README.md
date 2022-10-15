@@ -45,36 +45,61 @@ Once the container image has been built with docker follow the steps below to la
 
 8. Create a docker-compose.yml file with your preferred settings
 
-`
+
 
 `version: "3"
-`
-`services:
-`  ocserv:
-`    container_name: ocserv
-`    image: morganonbass/ocserv-saml:latest
-`    ports:
+
+services:
+
+ocserv:
+
+   container_name: ocserv
+   
+    build:
+      # Whereever this repo was cloned to
+      context: /opt/ocserv-saml
+    
+    ports:
+    
+      - "80:80/tcp"
+    
       - "443:443/tcp"
+      
       - "443:443/udp"
+      
     environment:
-      HOSTNAME: vpn.example.com
-      LISTEN_PORT: 443
-      TUNNEL_MODE: 'split_include'
-      TUNNEL_ROUTES: '10.1.0.0/25, 192.168.69.0/24'
-      DNS_SERVERS: 192.168.1.1
-      DEFAULT_DOMAIN: 'internal.example.com'
-      SPLIT_DNS_DOMAINS: 'internal.example.com'
-      CLIENTNET: 192.168.248.0
-      CLIENTNETMASK: 255.255.255.128
+    
+      HOSTNAME: "vpn.example.com"
+      
+      VPN_NAME: "Example VPN"
+      
+      LISTEN_PORT: "443"
+      
+      TLS_EMAIL: "email@example.com"
+      
+      TLS_TEST: "false"
+      
+      TUNNEL_MODE: "split-include'
+      
+      TUNNEL_ROUTES: "10.1.2.128/25, 192.168.1.0/24"
+      
+      DNS_SERVERS: "10.1.2.254"
+      
+      DEFAULT_DOMAIN: "internal.example.com"
+      
+      SPLIT_DNS_DOMAINS: "internal.example.com"
+      
+      CLIENTNET: "192.168.248.0"
+      
+      CLIENTNETMASK: "255.255.255.128"
+      
     volumes:
-      - './config/:/config/'
+      - "./config:/config"
+      
     cap_add:
       - NET_ADMIN
+      
     privileged: true
+    
     restart: unless-stopped
  `
-
-
-
-
-
