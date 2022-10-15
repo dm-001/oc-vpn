@@ -2,9 +2,9 @@
 
 # Copy default config files if removed
 if [[ ! -e /config/ocserv.conf || ! -e /config/connect.sh || ! -e /config/disconnect.sh || \
-	  ! -e /config/sp-metadata.xml || ! -e /config/sso.conf ]]; then
+	  ! -e /config/sp-metadata.xml || ! -e /config/sso.conf || ! -e /config/profile.xml ]]; then
 	echo "$(date) [err] Required config files are missing."
-	echo "\t [err] Please see the documentation at https://github.com/morganonbass/docker-ocserv-saml"
+	echo "\t [err] Creating defaults"
 	rsync -vzr --ignore-existing "/etc/default/ocserv/" "/config"
 fi
 
@@ -59,6 +59,18 @@ if [[ ! -z "${SPLIT_DNS_DOMAINS}" ]]; then
 		echo "$(date) [info] SPLIT_DNS_DOMAINS defined as '${SPLIT_DNS_DOMAINS}'"
 	else
 		echo "$(date) [err] SPLIT_DNS_DOMAINS not defined (via -e SPLIT_DNS_DOMAINS)"
+	fi
+fi
+
+
+if [[ ${GEOBLOCK} == "true" || ${GEOBLOCK} == "TRUE" || ${GEOBLOCK} == "True" ]]; then
+	echo "$(date) [info] Geoblocking enabled "
+	# Make sure the ALLOW_COUNTRY_CODES is defined
+	if [[ ! -z "${ALLOW_COUNTRY_CODES}" ]]; then
+		echo "$(date) [info] Geoblocking: Allowed country codes are ${ALLOW_COUNTRY_CODES}"
+	    else
+		echo "$(date) [warn] ALLOW_COUNTRY_CODES not defined. Defaulting to FR DE US GB AU CA NZ" 
+		export ALLOW_COUNTRY_CODES="FR DE US GB AU CA NZ"
 	fi
 fi
 
@@ -133,14 +145,24 @@ if [[ ! -z "${CLIENTNETMASK}" ]]; then
     sed -i "s/^ipv4-netmask.*$/ipv4-netmask = ${CLIENTNETMASK}/" /config/ocserv.conf
 fi
 
+# Add default domain to vpn config
 if [[ ! -z "${DEFAULT_DOMAIN}" ]]; then
 	sed -i "s/^default-domain =.*$/default-domain = ${DEFAULT_DOMAIN}/" /config/ocserv.conf
 fi
 
+# Enable Geoblocking?
+if [[ ${GEOBLOCK} == "true" || ${GEOBLOCK} == "TRUE" || ${GEOBLOCK} == "True" ]]; then
+	sed -i "s/^connect-script =.*$/connect-sript = \/config\/geoblock\.sh/" /config/ocserv.conf
+else
+	sed -i "s/^connect-script =.*$/connect-sript = \/config\/connect\.sh/" /config/ocserv.conf
+fi
+
+# Add VPN friendly name to AnyConnect profile
 if [[ ! -z "${VPN_NAME}" ]]; then
 	sed -i "s/<HostName>.\+<\/HostName>/<HostName>${VPN_NAME}<\/HostName>/g" /config/profile.xml
 fi
 
+# Add hostname/fqdn to config, sso data and anyconnect profile
 if [[ ! -z "${HOSTNAME}" ]]; then
 	echo "$(date) [info] Adding hostname: ${HOSTNAME} to config, metadata profile"
 	sed -i "s/^hostname.*$/hostname = ${HOSTNAME}/" /config/ocserv.conf
