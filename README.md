@@ -19,10 +19,57 @@ Planned changes not yet implemented:
 
 ## Environment Variables
 
-HOSTNAME
+
+- HOSTNAME
+
 : Hostname/FQDN of VPN server : "vpn.example.com"
-VPN_NAME
+
+- VPN_NAME
+
 : Friendly name of VPN server (for Anyconnect clients) : "Example VPN"
+
+- GEOBLOCK
+
+: True/False - Enable or disable geoblocking functionality :  "true"
+
+- ALLOW_COUNTRY_CODES
+
+: List of space-seperated ISO 3166 two-letter country codes. Geoblocking whitelist : "US FR DE GB CA AU NZ"
+
+- LISTEN_PORT
+
+: Port for VPN advertisement and traffic (depreciated - to be removed) : "443"
+
+- TLS_EMAIL
+: Email to register letsencrypt certificates against : "email@example.com"
+
+- TLS_TEST
+
+: True/False - Use letsencrypt ACME test endpoint instead of production endpoint : "false"
+
+- TUNNEL_MODE
+
+: split-include/all - full of split tunnel VPN mode : "split-include"
+
+- TUNNEL_ROUTES
+
+: VPN routes if running in split tunnel mode. CIDR, comma separated : "10.1.2.128/25, 192.168.1.0/24"
+
+- DNS_SERVERS
+
+: DNS servers to use via VPN : "10.1.2.254"
+
+- DEFAULT_DOMAIN
+
+: Default VPN domain : "internal.example.com"
+
+- CLIENTNET
+
+: Virtual network for VPN clients : "192.168.248.0"
+
+- CLIENTNETMASK
+
+: VPN virtual network subnet mask : "255.255.255.128"
 
 
 
