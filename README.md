@@ -46,7 +46,7 @@ Once the container image has been built with docker follow the steps below to la
 8. Create a docker-compose.yml file with your preferred settings
 
 ## Docker Compose Example
-## docker-compose.yml:
+### docker-compose.yml:
 
     version: "3"
     
