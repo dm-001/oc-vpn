@@ -1,7 +1,7 @@
 # ocserv-saml
 ### OpenConnect VPN container with SAML 2.0 auth integration
 
-Forked from [MorganOnBass docker-ocserv-saml](https://github.com/MorganOnBass/docker-ocserv-saml) 
+Forked from [Docker-ocserv-saml](https://github.com/MorganOnBass/docker-ocserv-saml) by MorganOnBass
 
 Notable build changes:
 - Rebased to Alpine Linux 3.16
