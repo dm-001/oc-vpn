@@ -152,9 +152,9 @@ fi
 
 # Enable Geoblocking?
 if [[ ${GEOBLOCK} == "true" || ${GEOBLOCK} == "TRUE" || ${GEOBLOCK} == "True" ]]; then
-	sed -i "s/^connect-script =.*$/connect-sript = \/config\/geoblock\.sh/" /config/ocserv.conf
+	sed -i "s/^connect-script =.*$/connect-script = \/config\/geoblock\.sh/" /config/ocserv.conf
 else
-	sed -i "s/^connect-script =.*$/connect-sript = \/config\/connect\.sh/" /config/ocserv.conf
+	sed -i "s/^connect-script =.*$/connect-script = \/config\/connect\.sh/" /config/ocserv.conf
 fi
 
 # Add VPN friendly name to AnyConnect profile
