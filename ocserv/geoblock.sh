@@ -11,7 +11,7 @@ if [ "x${IP_REAL}" = "x" ]; then
 fi
 
 # Get 2-letter code using geojs.io plaintext geoip country endpoint
-GEOIP_CODE=$(curl -s https://get.geojs.io/v1/ip/country/$IP_REAL)
+COUNTRY_CODE=$(curl -s https://get.geojs.io/v1/ip/country/$IP_REAL)
 
 # What happens if it returns 'nil'? i.e. address is in private range - fail open
 if [ "${COUNTRY_CODE}" = "nil" ]; then
