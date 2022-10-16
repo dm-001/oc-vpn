@@ -25,7 +25,6 @@ Planned changes not yet implemented:
 | VPN_NAME | "My Example VPN" | Friendly name of VPN server |
 | GEOBLOCK | "true" | Enable/disable geoblocking function. Accepted values: true, false |
 | ALLOW_COUNTRY_CODES | "US FR DE GB CA AU NZ" | List of space-seperated ISO 3166 two-letter country codes for geoblocking whitelist |
-| LISTEN_PORT | "443" | Port for VPN advertisement and traffic (depreciated - to be removed) |
 | TLS_EMAIL | "email@example.com" | Email to register letsencrypt certificates against |
 | TLS_TEST | "false" | Use letsencrypt ACME test endpoint instead of production endpoint. Accepted values: true, false |
 | TUNNEL_MODE | "split-include" | Full of split tunnel VPN mode. Accepted values: full, split-include |
@@ -61,7 +60,6 @@ services:
       VPN_NAME: "Example VPN"
       GEOBLOCK: "true"
       ALLOW_COUNTRY_CODES: "US FR DE GB CA AU NZ"
-      LISTEN_PORT: "443"
       TLS_EMAIL: "email@example.com"
       TLS_TEST: "false"
       TUNNEL_MODE: "split-include"
