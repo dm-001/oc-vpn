@@ -12,15 +12,6 @@ chmod a+x /config/*.sh
 
 ##### Verify Variables #####
 
-export LISTEN_PORT=$(echo "${LISTEN_PORT}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
-# Check PROXY_SUPPORT env var
-if [[ ! -z "${LISTEN_PORT}" ]]; then
-	echo "$(date) [info] LISTEN_PORT defined as '${LISTEN_PORT}'"
-else
-	echo "$(date) [warn] LISTEN_PORT not defined,(via -e LISTEN_PORT), defaulting to '443'"
-	export LISTEN_PORT="443"
-fi
-
 export TUNNEL_MODE=$(echo "${TUNNEL_MODE}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 # Check PROXY_SUPPORT env var
 if [[ ! -z "${TUNNEL_MODE}" ]]; then
@@ -75,15 +66,6 @@ if [[ ${GEOBLOCK} == "true" || ${GEOBLOCK} == "TRUE" || ${GEOBLOCK} == "True" ]]
 fi
 
 ##### Process Variables #####
-
-if [ ${LISTEN_PORT} != "443" ]; then
-	echo "$(date) [info] Modifying the listening port"
-	#Find TCP/UDP line numbers and use sed to replace the lines
-	TCPLINE = $(grep -rne 'tcp-port =' ocserv.conf | grep -Eo '^[^:]+')
-	UDPLINE = $(grep -rne 'udp-port =' ocserv.conf | grep -Eo '^[^:]+')
-	sed -i "$(TCPLINE)s/.*/tcp-port = ${LISTEN_PORT}/" /config/ocserv.conf
-	sed -i "$(UDPLINE)s/.*/tcp-port = ${LISTEN_PORT}/" /config/ocserv.conf
-fi
 
 if [[ ${TUNNEL_MODE} == "all" ]]; then
 	echo "$(date) [info] Tunneling all traffic through VPN"
