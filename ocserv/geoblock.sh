@@ -6,12 +6,18 @@ echo "$(date) [info] User ${USERNAME} - ${REASON} received from ${IP_REAL}. Chec
 
 # Make sure Ocserv passes IP_REAL
 if [ "x${IP_REAL}" = "x" ]; then
-  echo "$(date) [error] No IP info passed from ocserv. Ending connection attempt." 
+  echo "$(date) [err] No IP info passed from ocserv. Ending connection attempt." 
   exit 1
 fi
 
 # Get 2-letter code using geojs.io plaintext geoip country endpoint
 COUNTRY_CODE=$(curl -s https://get.geojs.io/v1/ip/country/$IP_REAL)
+
+# Make sure we returned something for COUNTRY_CODE - fail closed if we didn't
+if [ "x${COUNTRY_CODE}" = "x" ]; then
+  echo "$(date) [err] No IP geolocation found or error looking up IP geolocation. Ending connection attempt." 
+  exit 1
+fi
 
 # What happens if it returns 'nil'? i.e. address is in private range - fail open
 if [ "${COUNTRY_CODE}" = "nil" ]; then
