@@ -82,3 +82,35 @@ services:
     # Restart the container if it stops
     restart: unless-stopped
 ```
+
+## Step by step guide
+
+Pre-requisites:
+1. Server with publicly routable hostname
+2. Docker and docker-compose installed
+3. SAML 2.0 IDP
+
+### Step 1
+Create a docker-compose.yml file on your server with your preferred settings, based off the example above. The server must be reachable via the hostname given, using the ports specified in the docker-compose port mappings (80, 443 by default).
+
+### Step 2
+Configure your SAML IDP to handle authentication from the VPN server. Depending on the ID provider you may require the values below (substitute your VPN server hostname):
+- Assertion Consumer Service URL: https://vpn.example.com/+CSCOE+/saml/sp/acs
+- Login URL: https://vpn.example.com/+CSCOE+/saml/sp/login
+- Name ID Format: unspecified
+
+### Step 3
+Create a folder called 'config' in the location of your docker-compose.yml file. Retreive the metadata XML file and certificate from your SAML IDP and plave them in the 'config' folder with the following names:
+- idp-metadata.xml
+- idp-cert.pem
+
+### Step 4 (optional)
+If you want to supply your own certificates:
+Create a 'certs' subdirectory within the config folder and place your certificate and key within, named server-cert.pem and server-key.pem.
+If you do not want to supply your own certificates simply skip this step and the container will request and configure the correct certificates automatically from letsencrypt (via HTTP ACME challenge on port 80).
+
+
+**Setup complete.** 
+You can now launch your OpenConnect VPN server with `docker-compose up -d`. After completing it's initial setup the VPN server will listen on the specified ports (443 tcp and 443 udp by default) for incoming connections from clients.
+You can view the VPN server logs using `docker-compose logs` to review VPN status and events.
+
