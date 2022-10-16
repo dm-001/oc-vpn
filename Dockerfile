@@ -83,6 +83,7 @@ RUN buildDeps=" \
             sipcalc \
             libnl3 \
             certbot \
+	    curl \
             bash" && \
       apk add --update --virtual .run-deps $runDeps && \
       apk del .build-deps && \
