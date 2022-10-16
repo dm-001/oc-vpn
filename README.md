@@ -11,7 +11,6 @@ This container is a customised and updated fork of [docker-oc-saml](https://gith
 
 
 Planned changes not yet implemented:
-- Remove LISTEN_PORT variable and implementation - user can simply map a different port with docker
 - Remodel Dockerfile to use builder image for ocserv compilation (if possible)
 - Implement optional port restrictions within VPN routes
 
