@@ -53,17 +53,23 @@ if [[ ! -z "${SPLIT_DNS_DOMAINS}" ]]; then
 	fi
 fi
 
-
-if [[ ${GEOBLOCK} == "true" || ${GEOBLOCK} == "TRUE" || ${GEOBLOCK} == "True" ]]; then
-	echo "$(date) [info] Geoblocking enabled "
+# Verify GEOBLOCK status
+export GEOBLOCK=$(echo "$GEOBLOCK" | awk '{print tolower($0)}')
+if [[ ${GEOBLOCK} == "true" ]]; then
+	echo "$(date) [info] Geoblocking functions enabled "
 	# Make sure the ALLOW_COUNTRY_CODES is defined
 	if [[ ! -z "${ALLOW_COUNTRY_CODES}" ]]; then
+		# Make sure country codes are uppercase
+		export ALLOW_COUNTRY_CODES=$(echo "$ALLOW_COUNTRY_CODES" | awk '{print toupper($0)}')
 		echo "$(date) [info] Geoblocking: Allowed country codes are ${ALLOW_COUNTRY_CODES}"
 	    else
 		echo "$(date) [warn] ALLOW_COUNTRY_CODES not defined. Defaulting to FR DE US GB AU CA NZ" 
 		export ALLOW_COUNTRY_CODES="FR DE US GB AU CA NZ"
 	fi
+else
+	echo "$(date) [info] Geoblocking functions disabled"
 fi
+
 
 ##### Process Variables #####
 
