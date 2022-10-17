@@ -149,7 +149,7 @@ if [[ ! -z "${HOSTNAME}" ]]; then
 	echo "$(date) [info] Adding hostname: ${HOSTNAME} to config, metadata profile"
 	sed -i "s/^hostname.*$/hostname = ${HOSTNAME}/" /config/ocserv.conf
 	sed -i "s/https:\/\/[^\/?#]*/https:\/\/${HOSTNAME}/g" /config/sp-metadata.xml
-        sed -i "s/<HostAddress>.\+<\/HostAddress>/<HostName>${HOSTNAME}<\/HostAddress>/g" /config/profile.xml
+        sed -i "s/<HostAddress>.\+<\/HostAddress>/<HostAddress>${HOSTNAME}<\/HostAddress>/g" /config/profile.xml
 fi
 
 ##### Get certs if none exist #####
