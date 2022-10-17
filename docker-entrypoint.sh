@@ -139,7 +139,7 @@ if [[ ! -z "${DEFAULT_DOMAIN}" ]]; then
 fi
 
 # Enable Geoblocking?
-if [[ ${GEOBLOCK} == "true" || ${GEOBLOCK} == "TRUE" || ${GEOBLOCK} == "True" ]]; then
+if [[ ${GEOBLOCK} == "true" ]]; then
 	sed -i "s/^connect-script =.*$/connect-script = \/config\/geoblock\.sh/" /config/ocserv.conf
 else
 	sed -i "s/^connect-script =.*$/connect-script = \/config\/connect\.sh/" /config/ocserv.conf
