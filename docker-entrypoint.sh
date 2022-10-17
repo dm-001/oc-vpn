@@ -176,7 +176,8 @@ if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem
 	cp --update -v /etc/letsencrypt/live/$HOSTNAME/fullchain.pem /config/certs/server-cert.pem
 	cp --update -v /etc/letsencrypt/live/$HOSTNAME/privkey.pem /config/certs/server-key.pem
 	# set up a renewal hook to recopy certs and reload the VPN server upon cert renewal
-	echo "cp --update -v /etc/letsencrypt/live/${HOSTNAME}/fullchain.pem /config/certs/server-cert.pem" > /etc/letsencrypt/renewal-hooks/post/run.sh
+	echo '#!/bin/bash' > /etc/letsencrypt/renewal-hooks/post/run.sh
+	echo "cp --update -v /etc/letsencrypt/live/${HOSTNAME}/fullchain.pem /config/certs/server-cert.pem" >> /etc/letsencrypt/renewal-hooks/post/run.sh
 	echo "cp --update -v /etc/letsencrypt/live/${HOSTNAME}/privkey.pem /config/certs/server-key.pem"  >>  /etc/letsencrypt/renewal-hooks/post/run.sh
         echo "pkill -HUP ocserv" >> /etc/letsencrypt/renewal-hooks/post/run.sh && chmod +x /etc/letsencrypt/renewal-hooks/post/run.sh
 else
