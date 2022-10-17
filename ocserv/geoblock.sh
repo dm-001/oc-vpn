@@ -11,7 +11,7 @@ if [ "x${IP_REAL}" = "x" ]; then
 fi
 
 # Get 2-letter code using geojs.io plaintext geoip country endpoint
-COUNTRY_CODE=$(curl -s https://get.geojs.io/v1/ip/country/$IP_REAL)
+COUNTRY_CODE=$(wget -q -O - https://get.geojs.io/v1/ip/country/$IP_REAL)
 
 # Make sure we returned something for COUNTRY_CODE - fail closed if we didn't
 if [ "x${COUNTRY_CODE}" = "x" ]; then
