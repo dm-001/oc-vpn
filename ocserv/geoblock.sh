@@ -29,7 +29,7 @@ fi
 # Check if returned code is in the allow list
 for c in $ALLOW_COUNTRY_CODES; do
   if [ "${c}" = "${COUNTRY_CODE}" ]; then
-    echo "$(date) [info] ser connected from ${COUNTRY_CODE} - allowed"
+    echo "$(date) [info] User connected from ${COUNTRY_CODE} - allowed"
     echo "$(date) [info] User ${USERNAME} Connected - Server: ${IP_REAL_LOCAL} VPN IP: ${IP_REMOTE}  Remote IP: ${IP_REAL} Device:${DEVICE}"
     exit 0
   fi
