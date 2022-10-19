@@ -44,9 +44,10 @@ services:
 
   oc-vpn:
 
-    # Build direct from github repo
-    build https://github.com/dm-001/oc-vpn.git
-
+    # Build the container - tell docker to build based on the Dockerfile
+    build: 
+      context: ./oc-vpn/Dockerfile
+    
     # Map host ports to container ports  
     ports:
       - "80:80/tcp"
@@ -89,6 +90,10 @@ Pre-requisites:
 1. Server with publicly routable hostname
 2. Docker and docker-compose installed
 3. SAML 2.0 IDP
+
+
+### Step 0
+Download or clone this repository
 
 ### Step 1
 Create a docker-compose.yml file on your server with your preferred settings, based off the example above. The server must be reachable via the hostname given, using the ports specified in the docker-compose port mappings (80, 443 by default).
