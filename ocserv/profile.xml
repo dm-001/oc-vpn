@@ -14,12 +14,7 @@
                 <CertificateStoreOverride>false</CertificateStoreOverride>
                 <ProxySettings>Native</ProxySettings>
                 <AllowLocalProxyConnections>true</AllowLocalProxyConnections>
-                <MobilePolicy>
-                        <DeviceLockRequired
-                                MaximumTimeoutMinutes="5"
-                                MinimumPasswordLength="4"
-                                PasswordComplexity="alpha"/>
-                </MobilePolicy>
+                <AutoUpdate UserControllable="false">false</AutoUpdate>
         </ClientInitialization>
         <ServerList>
                 <HostEntry>
