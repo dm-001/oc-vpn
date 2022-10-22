@@ -1,6 +1,6 @@
 FROM alpine:3.16.2
 
-LABEL maintainer="dm" \
+LABEL maintainer="dm-001" \
       version=0.2 \
       description="Openconnect VPN server with saml 2.0 auth"
 
