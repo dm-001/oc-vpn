@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.16.2
 
 LABEL maintainer="dm" \
       version=0.2 \
@@ -91,7 +91,7 @@ RUN buildDeps=" \
 
 VOLUME /config
 
-ADD ocserv /etc/default/ocserv
+COPY ocserv /etc/default/ocserv
 
 WORKDIR /ocserv
 
