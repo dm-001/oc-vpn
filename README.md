@@ -1,7 +1,5 @@
 # OpenConnect VPN Server with SAML 2.0 SSO
 
-**Cisco AnyConnect compatible VPN server container, with SAML 2.0 single sign-in.**
-
 A customised and updated fork of [docker-oc-saml](https://github.com/MorganOnBass/docker-ocserv-saml) from MorganOnBass with the following changes/updates:
 1. Container rebased to Alpine 3.16
 2. Core build dependencies updated.
@@ -55,7 +53,8 @@ services:
 ```
 
 
-### Pre-requisites:
+## Pre-requisites:
+
 1. Server with publicly routable hostname
 2. Docker and docker-compose installed
 3. SAML 2.0 IDP 
