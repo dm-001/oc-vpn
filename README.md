@@ -11,8 +11,11 @@ A customised and updated fork of [docker-oc-saml](https://github.com/MorganOnBas
 
 ```
 version: "3.5"
+
 services:
+
   oc-vpn:
+  
     # Build the container - tell docker to build based on the Dockerfile
     build: 
       context: ./oc-vpn/Dockerfile
@@ -22,6 +25,7 @@ services:
       - "80:80/tcp"
       - "443:443/tcp"
       - "443:443/udp"
+      
     # Set variables  
     environment:
       HOSTNAME: "vpn.example.com"
