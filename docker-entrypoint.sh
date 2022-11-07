@@ -171,7 +171,11 @@ if [ ! -f /config/certs/server-key.pem ] || [ ! -f /config/certs/server-cert.pem
         else
 	    echo "$(date) [info] No certificates were found, requesting live TLS certificates for ${HOSTNAME} from LetsEncrypt"
 	    certbot certonly --standalone --agree-tos -n -m $TLS_EMAIL -d $HOSTNAME
-	fi	
+	fi
+	
+	# Create /config/certs directory if it doesn't exists
+	[[ -d /config/certs ]] || mkdir /config/certs
+	
 	# Copy and rename to /config/certs/server-cert.pem etc
 	cp --update -v /etc/letsencrypt/live/$HOSTNAME/fullchain.pem /config/certs/server-cert.pem
 	cp --update -v /etc/letsencrypt/live/$HOSTNAME/privkey.pem /config/certs/server-key.pem
