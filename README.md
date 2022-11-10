@@ -18,7 +18,7 @@ services:
   
     # Build the container - tell docker to build based on the Dockerfile
     build: 
-      context: ./oc-vpn/Dockerfile
+      context: ./oc-vpn
     
     # Map host ports to container ports  
     ports:
