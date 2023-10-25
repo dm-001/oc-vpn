@@ -189,6 +189,9 @@ else
 	echo "$(date) [info] Using existing certificates in /config/certs"
 fi
 
+# make sure the certbot renewal trigger is in crontab for 2am daily
+echo '0       2       *       *       *       certbot renew' >> /etc/crontabs/root
+
 # Enable NAT forwarding
 iptables -t nat -A POSTROUTING -j MASQUERADE
 iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
