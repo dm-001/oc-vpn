@@ -50,9 +50,9 @@ RUN buildDeps=" \
         set -x && \
       apk add --update --virtual .build-deps $buildDeps && \
       cd /tmp && \
-      wget https://github.com/lsh123/xmlsec/releases/download/xmlsec_1_3_1/xmlsec1-1.3.1.tar.gz && \
-      tar xzf xmlsec1-1.3.1.tar.gz && \
-      cd xmlsec1-1.3.1 && \
+      wget https://github.com/lsh123/xmlsec/releases/download/xmlsec-1_2_38/xmlsec1-1.2.38.tar.gz && \
+      tar xzf xmlsec1-1.2.38.tar.gz && \
+      cd xmlsec1-1.2.38 && \
       ./configure --enable-soap && \
       make && \
       make install && \
