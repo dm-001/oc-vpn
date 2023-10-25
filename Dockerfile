@@ -50,16 +50,16 @@ RUN buildDeps=" \
         set -x && \
       apk add --update --virtual .build-deps $buildDeps && \
       cd /tmp && \
-      wget http://www.aleksey.com/xmlsec/download/xmlsec1-1.2.34.tar.gz && \
-      tar xzf xmlsec1-1.2.34.tar.gz && \
-      cd xmlsec1-1.2.34 && \
+      wget https://github.com/lsh123/xmlsec/releases/download/xmlsec_1_3_1/xmlsec1-1.3.1.tar.gz && \
+      tar xzf xmlsec1-1.3.1.tar.gz && \
+      cd xmlsec1-1.3.1 && \
       ./configure --enable-soap && \
       make && \
       make install && \
       cd /tmp && \
-      wget https://dev.entrouvert.org/releases/lasso/lasso-2.8.0.tar.gz && \
-      tar zxf lasso-2.8.0.tar.gz && \
-      cd lasso-2.8.0 && \
+      wget https://dev.entrouvert.org/releases/lasso/lasso-2.8.2.tar.gz  && \
+      tar zxf lasso-2.8.2.tar.gz && \
+      cd lasso-2.8.2 && \
       ./configure && \
       make && \
       make install && \
